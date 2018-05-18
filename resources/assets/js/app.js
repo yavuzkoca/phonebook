@@ -10,7 +10,13 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
+let MyHeader = require('./components/MyHeader.vue');
+let MyFooter = require('./components/MyFooter.vue');
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    components:{
+        'my-header' : MyHeader,
+        'my-footer' : MyFooter
+    }
 });
