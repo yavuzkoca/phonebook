@@ -12,6 +12,7 @@ let MyFooter = require('./components/MyFooter.vue');
 
 
 
+
 const app = new Vue({
     el: '#app',
     components:{
