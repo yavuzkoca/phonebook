@@ -12,24 +12,30 @@
                     <div class="control">
                         <input class="input" type="text" placeholder="Enter your name"
                                v-model="list.name"
+                               :class="{'is-danger':errors.name}"
                         >
                     </div>
+                    <small class="has-text-danger" v-if="errors.name">{{ errors.name[0] }}</small>
                 </div>
                 <div class="field">
                     <label class="label">Phone</label>
                     <div class="control">
                         <input class="input" type="text" placeholder="Enter your phone"
                                v-model="list.phone"
+                               :class="{'is-danger':errors.phone}"
                         >
                     </div>
+                    <small class="has-text-danger" v-if="errors.phone">{{ errors.phone[0] }}</small>
                 </div>
                 <div class="field">
                     <label class="label">Email</label>
                     <div class="control">
                         <input class="input" type="email" placeholder="Enter your email"
                                v-model="list.email"
+                               :class="{'is-danger':errors.email}"
                         >
                     </div>
+                    <small class="has-text-danger" v-if="errors.email">{{ errors.email[0] }}</small>
                 </div>
             </section>
             <footer class="modal-card-foot">
@@ -50,6 +56,9 @@
                     name: '',
                     email: '',
                     phone: ''
+                },
+                errors: {
+
                 }
             }
         },
@@ -60,10 +69,12 @@
             save(){
                 axios.post('/phonebook', this.$data.list)
                     .then((response) => {
-                        this.close()
+                        this.close();
+                        this.errors = {};
                 })
                     .catch((error) => {
 
+                        this.errors = error.response.data.errors;
                 })
             }
         }
