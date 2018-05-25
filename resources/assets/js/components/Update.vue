@@ -3,7 +3,7 @@
         <div class="modal-background"></div>
         <div class="modal-card">
             <header class="modal-card-head">
-                <p class="modal-card-title">Add New Entry</p>
+                <p class="modal-card-title">Update {{ list.name.substr(0, list.name.indexOf(" ")) }}'s Details</p>
                 <button class="delete" aria-label="close" @click="close"></button>
             </header>
             <section class="modal-card-body">
@@ -40,7 +40,7 @@
                 </div>
             </section>
             <footer class="modal-card-foot">
-                <button class="button is-success" @click="save">Save</button>
+                <button class="button is-success" @click="update">Update</button>
                 <button class="button" @click="close">Cancel</button>
             </footer>
         </div>
@@ -50,14 +50,9 @@
 <script>
     export default {
         components: {},
-        props: ['openModal'],
+        props: ['openModal', 'list'],
         data() {
             return{
-                list: {
-                    name: '',
-                    email: '',
-                    phone: ''
-                },
                 errors: {
                 },
                 message: ''
@@ -67,16 +62,17 @@
             close() {
                 this.$emit('closeRequest')
             },
-            save(){
-                axios.post('/phonebook', this.$data.list)
+            update(){
+                axios.patch(`/phonebook/${this.list.id}`, this.list)
                     .then((response) => {
+                        console.log(response);
                         this.close();
                         this.errors = {};
-                })
+                    })
                     .catch((error) => {
                         error.response.data.errors ? this.errors = error.response.data.errors : '';
                         this.message = error.response.data.message;
-                })
+                    })
             }
         }
     }

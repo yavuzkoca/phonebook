@@ -23,7 +23,7 @@
                     <i class="fas fa-trash has-text-danger"></i>
                 </span>
                     <span class="panel-icon column is-1">
-                    <i class="fas fa-edit has-text-warning"></i>
+                    <i class="fas fa-edit has-text-warning" @click="openUpdate(key)"></i>
                 </span>
                     <span class="panel-icon column is-1">
                     <i class="fas fa-eye has-text-info" @click="openShow(key)"></i>
@@ -33,12 +33,14 @@
         </nav>
         <add v-bind:openModal="addActive" @closeRequest="close"></add>
         <show v-bind:openModal="showActive" :list="list" @closeRequest="close"></show>
+        <update v-bind:openModal="updateActive" :list="list" @closeRequest="close"></update>
     </div>
 </template>
 
 <script>
     let Add = require('./Add.vue');
     let Show = require('./Show.vue');
+    let Update = require('./Update.vue');
     import Vue from 'vue'
     import VueResource from 'vue-resource'
     import VuePaginator from 'vuejs-paginator'
@@ -49,12 +51,14 @@
         components: {
             'add': Add,
             'show': Show,
+            'update': Update,
             VPaginator: VuePaginator
         },
         data() {
             return {
                 addActive: '',
                 showActive: '',
+                updateActive: '',
                 lists: {
 
                 },
@@ -98,14 +102,18 @@
             close(){
                 this.addActive = false;
                 this.showActive = false;
+                this.updateActive = false;
             },
             updateResource(data){
                 this.lists = data
             },
             openShow(key){
-                console.log(this.$children);
                 this.list = this.lists[key];
                 this.showActive = 'is-active';
+            },
+            openUpdate(key){
+                this.list = this.lists[key];
+                this.updateActive = 'is-active';
             }
         }
     }

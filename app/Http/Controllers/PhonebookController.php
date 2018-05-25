@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PhonebookRequest;
+use App\Http\Requests\UpdatePhonebookRequest;
 use App\Phonebook;
 use Illuminate\Http\Request;
 
@@ -61,16 +62,11 @@ class PhonebookController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Phonebook  $phonebook
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Phonebook $phonebook)
+
+    public function update(UpdatePhonebookRequest $request)
     {
-        //
+        Phonebook::findOrFail($request->id)->update($request->all());
+        // Phonebook::update($request->all());
     }
 
     /**
