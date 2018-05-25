@@ -72,6 +72,13 @@
                     .then((response) => {
                         this.close();
                         this.errors = {};
+                        this.$parent.lists.push(response.data);
+                        this.$parent.lists.sort(function(a,b){
+                            return ((a.name < b.name) ? -1 : 1);
+                        });
+                        // this.$parent.resource_url = '/pagination2';
+                        // this.$parent.resource_url = '/pagination';
+                        this.list = "";
                 })
                     .catch((error) => {
                         error.response.data.errors ? this.errors = error.response.data.errors : '';

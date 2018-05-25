@@ -29,15 +29,10 @@ class PhonebookController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(PhonebookRequest $request)
     {
-        Phonebook::create($request->all());
+        return Phonebook::create($request->all());
     }
 
     /**
@@ -69,15 +64,10 @@ class PhonebookController extends Controller
         // Phonebook::update($request->all());
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Phonebook  $phonebook
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(Phonebook $phonebook)
     {
-        //
+        $phonebook->delete();
     }
 
     public function getPhonebook()

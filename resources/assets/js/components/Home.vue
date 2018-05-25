@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-bind="http://www.w3.org/1999/xhtml">
     <div>
         <nav class="panel column is-offset-2 is-8">
             <p class="panel-heading">
@@ -6,6 +6,9 @@
                 <button class="button is-link is-outlined" @click="openAdd">
                     Add New
                 </button>
+                <span class="is-pulled-right" v-if="loading">
+                    <i class="fa fa-refresh fa-spin fa-2x fa-fw"></i>
+                </span>
             </p>
             <div class="panel-block">
                 <p class="control has-icons-left">
@@ -20,7 +23,7 @@
                     {{ item.name }}
                 </span>
                     <span class="panel-icon column is-1">
-                    <i class="fas fa-trash has-text-danger"></i>
+                    <i class="fas fa-trash has-text-danger" @click="del(key,item.id)"></i>
                 </span>
                     <span class="panel-icon column is-1">
                     <i class="fas fa-edit has-text-warning" @click="openUpdate(key)"></i>
@@ -34,6 +37,7 @@
         <add v-bind:openModal="addActive" @closeRequest="close"></add>
         <show v-bind:openModal="showActive" :list="list" @closeRequest="close"></show>
         <update v-bind:openModal="updateActive" :list="list" @closeRequest="close"></update>
+        <del-modal v-bind:openModal="delActive" :key="key" :list="list" @closeRequest="close" @delRequest="removeItem(key)"></del-modal>
     </div>
 </template>
 
@@ -41,6 +45,7 @@
     let Add = require('./Add.vue');
     let Show = require('./Show.vue');
     let Update = require('./Update.vue');
+    let Del = require('./Delete.vue');
     import Vue from 'vue'
     import VueResource from 'vue-resource'
     import VuePaginator from 'vuejs-paginator'
@@ -52,6 +57,7 @@
             'add': Add,
             'show': Show,
             'update': Update,
+            'del-modal': Del,
             VPaginator: VuePaginator
         },
         data() {
@@ -59,12 +65,14 @@
                 addActive: '',
                 showActive: '',
                 updateActive: '',
+                delActive: '',
                 lists: {
 
                 },
                 list: {
 
                 },
+                key: '',
                 errors: {
 
                 },
@@ -82,7 +90,8 @@
                     previous_button_text: 'Go Back',
                     page_numbers: true,
                     max_buttons: 7
-                }
+                },
+                loading: false
             }
         },
         mounted(){
@@ -103,6 +112,7 @@
                 this.addActive = false;
                 this.showActive = false;
                 this.updateActive = false;
+                this.delActive = false;
             },
             updateResource(data){
                 this.lists = data
@@ -114,6 +124,14 @@
             openUpdate(key){
                 this.list = this.lists[key];
                 this.updateActive = 'is-active';
+            },
+            del(key, id){
+                this.list = this.lists[key];
+                this.delActive = 'is-active';
+                this.key = key;
+            },
+            removeItem(key){
+                this.lists.splice(key, 1);
             }
         }
     }
