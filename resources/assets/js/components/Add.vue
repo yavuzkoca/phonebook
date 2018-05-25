@@ -7,6 +7,7 @@
                 <button class="delete" aria-label="close" @click="close"></button>
             </header>
             <section class="modal-card-body">
+                <small class="has-text-danger" v-if="message">{{ message }}</small>
                 <div class="field">
                     <label class="label">Name</label>
                     <div class="control">
@@ -58,8 +59,8 @@
                     phone: ''
                 },
                 errors: {
-
-                }
+                },
+                message: ''
             }
         },
         methods: {
@@ -73,8 +74,8 @@
                         this.errors = {};
                 })
                     .catch((error) => {
-
-                        this.errors = error.response.data.errors;
+                        error.response.data.errors ? this.errors = error.response.data.errors : '';
+                        this.message = error.response.data.message;
                 })
             }
         }

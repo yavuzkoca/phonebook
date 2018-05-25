@@ -83,4 +83,13 @@ class PhonebookController extends Controller
     {
         //
     }
+
+    public function getPhonebook()
+    {
+        return Phonebook::orderBy('name')->get();
+    }
+
+    public function pagination(){
+        return Phonebook::orderBy('name')->paginate(10);
+    }
 }

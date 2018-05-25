@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PhonebookRequest extends FormRequest
@@ -13,7 +14,7 @@ class PhonebookRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::check() ? true : true;
     }
 
     /**
