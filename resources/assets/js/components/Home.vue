@@ -12,13 +12,15 @@
             </p>
             <div class="panel-block">
                 <p class="control has-icons-left">
-                    <input class="input is-small" type="text" placeholder="search">
+                    <input class="input is-small" type="text" placeholder="search"
+                    v-model="searchQuery"
+                    >
                     <span class="icon is-small is-left">
                     <i class="fas fa-search" aria-hidden="true"></i>
                     </span>
                 </p>
             </div>
-            <a class="panel-block" v-for="item,key in lists">
+            <a class="panel-block" v-for="item,key in temp">
                 <span class="column is-9">
                     {{ item.name }}
                 </span>
@@ -69,10 +71,14 @@
                 lists: {
 
                 },
+                temp: {
+
+                },
                 list: {
 
                 },
                 key: '',
+                searchQuery: '',
                 errors: {
 
                 },
@@ -97,7 +103,7 @@
         mounted(){
             axios.get(this.resource_url)
                 .then((response) => {
-                    this.lists = response.data.data;
+                    this.lists = this.temp = response.data.data;
                 })
                 .catch((error) => {
                     error.response.data.errors ? this.errors = error.response.data.errors : '';
@@ -132,6 +138,21 @@
             },
             removeItem(key){
                 this.lists.splice(key, 1);
+            }
+        },
+        watch: {
+            searchQuery(){
+                if(this.searchQuery.length > 0){
+                    this.temp = this.lists.filter((item) => {
+                        return Object.keys(item).some((key) => {
+                            let st = String(item[key]);
+                            return st.toLowerCase().indexOf(this.searchQuery.toLowerCase()) > -1;
+                        });
+                        // return item.name.toLowerCase().indexOf(this.searchQuery.toLowerCase()) > -1;
+                    })
+                }else{
+                    this.temp = this.lists;
+                }
             }
         }
     }
